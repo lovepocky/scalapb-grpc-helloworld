@@ -18,7 +18,7 @@ object HelloWorldClient {
         //val channel = NettyChannelBuilder.forAddress(host, port).usePlaintext(true).build
         val channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).asInstanceOf[ManagedChannelBuilder[_]].build
         val request = HelloRequest(name = "World")
-        
+
         //Blocking call:
         val blockingStub = GreeterGrpc.blockingStub(channel)
         val reply: HelloReply = blockingStub.sayHello(request)
@@ -31,6 +31,28 @@ object HelloWorldClient {
         f.onSuccess {
             case reply: HelloReply => println(reply)
         }
+    }
+
+    def bug: Unit = {
+
+        /**
+          * A: ManagedChannelBuilder
+          */
+
+        class A[T <: A[T]] {
+            def retAmistake: A[_] = ???
+
+            def retA: A[_ <: A[_]] = ???
+
+            def retT: T = ???
+        }
+
+        class B extends A[B]
+
+        (new B).retAmistake.retT
+        (new B).retA.retT.retA.retT.retA.retT
+
+        ???
     }
 
 }
