@@ -1,9 +1,9 @@
 # ScalaPB - gRPC - HelloWorld
 
 1. generate code from proto files
-```
-sbt compile
-```
+    ```
+    sbt compile
+    ```
 
 2. start server
 
