@@ -58,7 +58,7 @@ class HelloWorldServer(executionContext: ExecutionContext) { self =>
     private[this] var server: Server = null
 
     private def start(): Unit = {
-        server = NettyServerBuilder.forPort(HelloWorldServer.port).addService(GreeterGrpc.bindService(new GreeterImpl, executionContext)).build.start
+        server = ServerBuilder.forPort(HelloWorldServer.port).addService(GreeterGrpc.bindService(new GreeterImpl, executionContext)).asInstanceOf[ServerBuilder[_]].build.start
         HelloWorldServer.logger.info("Server started, listening on " + HelloWorldServer.port)
         Runtime.getRuntime.addShutdownHook(new Thread() {
             override def run(): Unit = {
