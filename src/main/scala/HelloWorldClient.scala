@@ -16,7 +16,9 @@ object HelloWorldClient {
         val host: String = "localhost"
         val port: Int = 50051
         //val channel = NettyChannelBuilder.forAddress(host, port).usePlaintext(true).build
-        val channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).asInstanceOf[ManagedChannelBuilder[_]].build
+        val channel = ManagedChannelBuilder.forAddress(host, port)
+            .asInstanceOf[ManagedChannelBuilder[_ <: ManagedChannelBuilder[_]]]
+            .usePlaintext(true).build
         val request = HelloRequest(name = "World")
 
         //Blocking call:
@@ -51,6 +53,7 @@ object HelloWorldClient {
 
         (new B).retAmistake.retT
         (new B).retA.retT.retA.retT.retA.retT
+        (new B).retAmistake.asInstanceOf[A[_ <: A[_]]].retT.retT
 
         ???
     }
