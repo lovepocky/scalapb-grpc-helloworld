@@ -35,7 +35,7 @@ import java.util.logging.Logger
 import io.grpc.netty.NettyServerBuilder
 import io.grpc.{Server, ServerBuilder}
 // import io.grpc.examples.helloworld.helloworld.{GreeterGrpc, HelloRequest, HelloReply}
-import com.example.protos.hello._
+import io.grpc.examples.helloworld.helloworld._
 
 import scala.concurrent.{ExecutionContext, Future}
 

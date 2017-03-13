@@ -7,7 +7,9 @@ object HelloWorldClient {
 
     def main(args: Array[String]): Unit = {
         import scala.concurrent.Future
-        import com.example.protos.hello._
+        //import com.example.protos.hello._
+        import io.grpc.examples.helloworld.helloworld._
+
         import io.grpc._
         import io.grpc.netty.NettyChannelBuilder
         import io.grpc.{StatusRuntimeException, ManagedChannelBuilder, ManagedChannel}
