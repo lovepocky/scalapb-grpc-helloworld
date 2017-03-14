@@ -30,6 +30,7 @@
  */
 package io.grpc.examples.helloworld
 
+import java.net.{InetAddress, NetworkInterface}
 import java.util.logging.Logger
 
 import io.grpc.netty.NettyServerBuilder
@@ -42,11 +43,11 @@ import scala.concurrent.{ExecutionContext, Future}
 /**
   * [[https://github.com/grpc/grpc-java/blob/v0.13.2/examples/src/main/java/io/grpc/examples/helloworld/HelloWorldServer.java]]
   */
-object HelloWorldServer {
-    private val logger = Logger.getLogger(classOf[HelloWorldServer].getName)
+object HelloWorldGRPCServer {
+    private val logger = Logger.getLogger(classOf[HelloWorldGRPCServer].getName)
 
     def main(args: Array[String]): Unit = {
-        val server = new HelloWorldServer(ExecutionContext.global)
+        val server = new HelloWorldGRPCServer(ExecutionContext.global)
         server.start()
         server.blockUntilShutdown()
     }
@@ -54,14 +55,14 @@ object HelloWorldServer {
     private val port = 50051
 }
 
-class HelloWorldServer(executionContext: ExecutionContext) { self =>
+class HelloWorldGRPCServer(executionContext: ExecutionContext) { self =>
     private[this] var server: Server = null
 
     private def start(): Unit = {
-        server = ServerBuilder.forPort(HelloWorldServer.port).asInstanceOf[ServerBuilder[_ <: ServerBuilder[_]]]
+        server = ServerBuilder.forPort(HelloWorldGRPCServer.port).asInstanceOf[ServerBuilder[_ <: ServerBuilder[_]]]
             .addService(GreeterGrpc.bindService(new GreeterImpl, executionContext))
             .build.start
-        HelloWorldServer.logger.info("Server started, listening on " + HelloWorldServer.port)
+        HelloWorldGRPCServer.logger.info("Server started, listening on " + HelloWorldGRPCServer.port + s", Server: ${InetAddress.getLocalHost}")
         Runtime.getRuntime.addShutdownHook(new Thread() {
             override def run(): Unit = {
                 System.err.println("*** shutting down gRPC server since JVM is shutting down")
@@ -86,6 +87,7 @@ class HelloWorldServer(executionContext: ExecutionContext) { self =>
     private class GreeterImpl extends GreeterGrpc.Greeter {
         override def sayHello(req: HelloRequest) = {
             val reply = HelloReply(message = "Hello " + req.name)
+            HelloWorldGRPCServer.logger.info(s"Receive Req: `${req.toString}`, from server: ${InetAddress.getLocalHost.getHostAddress}")
             Future.successful(reply)
         }
     }

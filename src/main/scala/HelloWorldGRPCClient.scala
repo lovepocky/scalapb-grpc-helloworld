@@ -3,7 +3,7 @@ import io.grpc.internal.{AbstractManagedChannelImplBuilder, DnsNameResolverProvi
 /**
   * Created by lovepocky on 17/3/12.
   */
-object HelloWorldClient {
+object HelloWorldGRPCClient {
 
     def main(args: Array[String]): Unit = {
         import scala.concurrent.Future
